@@ -16,15 +16,28 @@ module Day1
     end
   end
 
-  # def count_zeroes_passed(position, direction, distance)
-  #   zeroes_passed = 0
-  #   if distance > 100
-  #     zeroes_passed = distance / 100
-  #   end
+  def count_zeroes_passed(position, direction, distance)
+    zeroes_passed = 0
+    if distance > 100
+      zeroes_passed = distance / 100
+    end
 
-  #   if direction == 'R' && (distance % 100) + position > 99
-  #   elsif direction == 'L' && position - (distance % 100) < 1
-  # end
+    if position != 0
+      if direction == 'R' && (distance % 100) + position > 99
+        zeroes_passed += 1
+      end
+
+      if direction == 'L' && position - (distance % 100) < 1
+        zeroes_passed += 1
+      end
+    end
+
+    # if zeroes_passed > 0
+    #   puts "passed zero #{zeroes_passed} times, starting at #{position}, rotating #{direction}#{distance}"
+    # end
+
+    zeroes_passed
+  end
   
   def get_commands
     lines = File.readlines("#{File.dirname(__FILE__)}/../inputs/day1.txt").map(&:chomp)
@@ -41,15 +54,15 @@ module Day1
     commands = get_commands
     
     position = 50
-    zeroes_landed_on = 0
+    zeroes_passed = 0
     commands.each do |command|
+      zeroes_passed += count_zeroes_passed(position, command[:direction], command[:distance])
       position = move_dial(position, command[:direction], command[:distance])
-      zeroes_landed_on += 1 if position == 0
     end
     
     {
       position: position,
-      zeroes_landed_on: zeroes_landed_on
+      zeroes_passed: zeroes_passed
     }
   end
 end

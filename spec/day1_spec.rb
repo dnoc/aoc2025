@@ -40,10 +40,30 @@ describe 'Day 1' do
   end
 
   describe '.main' do
+    it 'works for small example' do
+      commands = [
+        { direction: 'L', distance: 68 },
+        { direction: 'L', distance: 30 },
+        { direction: 'R', distance: 48 },
+        { direction: 'L', distance: 5 },
+        { direction: 'R', distance: 60 },
+        { direction: 'L', distance: 55 },
+        { direction: 'L', distance: 1 },
+        { direction: 'L', distance: 99 },
+        { direction: 'R', distance: 14 },
+        { direction: 'L', distance: 82 }
+      ]
+      allow(Day1).to receive(:get_commands).and_return(commands)
+      result = Day1.main
+      expect(result[:position]).to eq(32)
+      expect(result[:zeroes_passed]).to eq(6469)
+    end
+
     it 'works' do
       result = Day1.main
       expect(result[:position]).to eq(32)
-      expect(result[:zeroes_landed_on]).to eq(1026)
+      # expect(result[:zeroes_landed_on]).to eq(1026)
+      expect(result[:zeroes_passed]).to eq(5923)
     end
   end
 end
