@@ -8,6 +8,25 @@ import (
 	"sync"
 )
 
+func isInvalidForPart2(x string) bool {
+	length := len(x)
+
+	for i := 2; i <= length; i++ {
+		if length%i == 0 {
+			firstSegment := x[0 : length/i]
+			testString := ""
+			for j := 0; j < i; j++ {
+				testString += firstSegment
+			}
+			if testString == x {
+				return true
+			}
+		}
+	}
+
+	return false
+}
+
 func hasDoubleDigits(x string) bool {
 	length := len(x)
 	if length%2 != 0 {
@@ -26,7 +45,10 @@ func findInvalidNumbers(rangeStr string) []int {
 	result := []int{}
 	resultStr := ""
 	for i := start; i <= end; i++ {
-		if hasDoubleDigits(strconv.Itoa(int(i))) {
+		// Part 1
+		// if hasDoubleDigits(strconv.Itoa(int(i))) {
+		// Part 2
+		if isInvalidForPart2(strconv.Itoa(int(i))) {
 			fmt.Print(fmt.Sprint(i) + " ")
 			result = append(result, i)
 			resultStr += fmt.Sprint(i) + " "
