@@ -1,24 +1,46 @@
 module Day3
   extend self
 
-  def calculate_max_joltage(batteries)
-    max_joltages = batteries.sort
-    max_battery = max_joltages.last
-    second = max_joltages[-2]
-
-    result = if max_battery == second
-      max_battery + second
-    elsif batteries.index(max_battery) == batteries.length - 1
-      second + max_battery
-    elsif batteries.index(max_battery) < batteries.index(second)
-      max_battery + second
-    else
-      after_max = batteries[batteries.index(max_battery)+1..-1].max
-      max_battery + after_max
+  def part_2(batteries)
+    result = batteries.dup
+    index = 0
+    while result.length > 12 
+      left = result[index]
+      right = result[index+1]
+      if right.nil?
+        result.delete_at(index)
+        index -= 1
+      elsif left < right
+        result.delete_at(index)
+        if index != 0
+          index -= 1
+        end
+      else
+        index += 1
+      end
     end
 
-    result.to_i
+    result.join.to_i
   end
+
+  # def calculate_max_joltage(batteries)
+  #   max_joltages = batteries.sort
+  #   max_battery = max_joltages.last
+  #   second = max_joltages[-2]
+
+  #   result = if max_battery == second
+  #     max_battery + second
+  #   elsif batteries.index(max_battery) == batteries.length - 1
+  #     second + max_battery
+  #   elsif batteries.index(max_battery) < batteries.index(second)
+  #     max_battery + second
+  #   else
+  #     after_max = batteries[batteries.index(max_battery)+1..-1].max
+  #     max_battery + after_max
+  #   end
+
+  #   result.to_i
+  # end
   
   def get_battery_banks
     lines = File.readlines("#{File.dirname(__FILE__)}/../inputs/day3.txt").map(&:chomp)
@@ -33,8 +55,9 @@ module Day3
     
     max_joltage = 0
     banks.each do |batteries|
-      max_joltage += calculate_max_joltage(batteries)
+      max_joltage += part_2(batteries)
       # puts "max_joltage #{calculate_max_joltage(batteries)}"
+      # puts "max_joltage #{part_2(batteries)}"
     end
     
     max_joltage
